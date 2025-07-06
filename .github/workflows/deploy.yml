@@ -10,20 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Setup Railway CLI
+        uses: MadeByThePinsHub/setup-railway-cli-action@v0.1.0
         with:
-          python-version: 3.11
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
+          npm-mode: true  # instala @railway/cli
 
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: |
-          echo "⏳ Deploying to Railway..."
-          railway up
+        run: railway up

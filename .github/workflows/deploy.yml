@@ -1,0 +1,33 @@
+name: Deploy FastAPI with SeleniumBase to Railway
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta cuando haces push a la rama main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+
+    - name: Install Railway CLI
+      run: npm install -g railway
+
+    - name: Login to Railway
+      run: railway login --ci
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+    - name: Link Railway Project
+      run: railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
+
+    - name: Deploy to Railway
+      run: railway up
